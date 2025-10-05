@@ -1,0 +1,58 @@
+/* Navigation menu active state styling - More specific selectors */
+.mat-drawer .mat-nav-list .mat-list-item.active,
+.mat-drawer .mat-nav-list .mat-list-item.active:hover,
+.mat-drawer .mat-nav-list .mat-list-item.active:focus,
+.mat-drawer .mat-nav-list .mat-list-item.active .mat-list-item-content,
+.mat-drawer .mat-nav-list .mat-list-item.active .mat-list-item-content:hover,
+.mat-drawer .mat-nav-list .mat-list-item.active .mat-list-item-content:focus {
+  background-color: rgba(63, 81, 181, 0.12) !important; /* Light indigo background */
+  color: #3f51b5 !important; /* Indigo text color */
+  font-weight: 500 !important;
+  border-left: 4px solid #3f51b5; /* Left border indicator */
+}
+
+/* Target the ripple effect and other Material states */
+.mat-drawer .mat-nav-list .mat-list-item.active .mat-ripple-element {
+  background-color: rgba(63, 81, 181, 0.2) !important;
+}
+
+/* Override Material's focus and hover states for active items */
+.mat-drawer .mat-nav-list .mat-list-item.active:focus,
+.mat-drawer .mat-nav-list .mat-list-item.active:hover {
+  background-color: rgba(63, 81, 181, 0.12) !important;
+}
+
+/* Optional: Style for non-active items on hover */
+.mat-drawer .mat-nav-list .mat-list-item:not(.active):hover,
+.mat-drawer .mat-nav-list .mat-list-item:not(.active):hover .mat-list-item-content {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Ensure proper spacing and alignment */
+.mat-drawer .mat-nav-list .mat-list-item {
+  margin-bottom: 4px;
+  border-radius: 4px;
+  margin-left: 8px;
+  margin-right: 8px;
+  transition: all 0.3s ease;
+}
+
+.active{
+  background-color: #6b78c4;
+  color: rgb(236, 226, 226) !important;
+  font-weight: bold !important;
+}
+
+/* Alternative styling - darker theme (uncomment if preferred) */
+/*
+.mat-nav-list .mat-list-item.active {
+  background-color: #3f51b5 !important;
+  color: white !important;
+  border-radius: 4px;
+}
+
+.mat-nav-list .mat-list-item.active .mat-list-item-content {
+  background-color: #3f51b5 !important;
+  color: white !important;
+}
+*/
