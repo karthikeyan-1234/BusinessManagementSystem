@@ -50,6 +50,8 @@ builder.Services.AddDbContext<ProductsDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("ProductsDbConnection"))
 );
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
