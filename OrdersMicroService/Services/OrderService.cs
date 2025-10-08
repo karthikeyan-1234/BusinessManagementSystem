@@ -55,6 +55,40 @@ namespace OrdersMicroService.Services
             }
         }
 
+        //Delete order async
+
+         public async Task<bool> DeleteOrderAsync(Guid OrderId)
+        {
+            var orderId = Guid.NewGuid();
+
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                try
+                {
+                    IOrderRepository _orderRepository = scope.ServiceProvider.GetRequiredService<IOrderRepository>();
+                    var delOrder = await _orderRepository.GetAsync(OrderId);
+
+                    // Publish "OrderCreated" event to Kafka
+                    var evt = new OrderCancelledEvent(delOrder);
+
+                    await _producer.ProduceAsync("order-deleted", new Message<string, string>
+                    {
+                        Key = delOrder.OrderId.ToString(),
+                        Value = JsonSerializer.Serialize(evt)
+                    });
+
+                    Console.WriteLine($"[OrderSaga] Published OrderDeleted for {delOrder.OrderId}");
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[OrderSaga] Error deleting order: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
         // This runs in a background worker service
 
         public Task StartAsync(CancellationToken cancellationToken)

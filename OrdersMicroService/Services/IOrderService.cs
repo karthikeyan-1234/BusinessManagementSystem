@@ -7,5 +7,6 @@ namespace OrdersMicroService.Services
         Task<string> CreateOrderAsync(Order newOrder);
         public Task ListenForEvents(CancellationToken cancellationToken);
         public Task<IEnumerable<Order>> GetAllOrdersAsync();
+        Task<bool> DeleteOrderAsync(Guid OrderId);
     }
 }

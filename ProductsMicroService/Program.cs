@@ -1,6 +1,8 @@
 using CommonServices.Models;
 using CommonServices.Repositories;
 using Confluent.Kafka;
+
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 using ProductsMicroService.Contexts;
@@ -52,6 +54,17 @@ builder.Services.AddDbContext<ProductsDbContext>(opt =>
 
 
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        policy.AllowAnyOrigin();
+    });
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -60,6 +73,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

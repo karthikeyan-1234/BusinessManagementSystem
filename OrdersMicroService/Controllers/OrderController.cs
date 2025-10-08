@@ -33,8 +33,20 @@ namespace OrdersMicroService.Controllers
             return Ok(new { Message = "Order created successfully", OrderId = 123 });
         }
 
+        [HttpPost("delete")]
+        public async Task<IActionResult> DeleteOrderAsync([FromBody] Guid orderId)
+        {
+            // Logic to delete an order
+            var result = await _orderService.DeleteOrderAsync(orderId);
+            if (result)
+            {
+                return Ok(new { Message = "Order deleted successfully" });
+            }
+            return NotFound(new { Message = "Order not found" });
+        }
+
         [HttpGet("GetAllOrders")]
-        public async Task<IActionResult> GetAllOrders()
+        public async Task<IActionResult> GetAllOrdersAsync()
         {
             // Logic to retrieve all orders
             var orders = await _orderService.GetAllOrdersAsync();

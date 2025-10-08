@@ -1,0 +1,36 @@
+<div mat-dialog-header>
+    <div class="close-button">
+        <button mat-icon-button (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <h2 mat-dialog-title>Add new product</h2>
+</div>
+
+<div mat-dialog-content>
+    <form (ngSubmit)="onSubmit()" #productForm="ngForm">
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Product Name</mat-label>
+            <input matInput type="text" name="name" [(ngModel)]="product.name" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput name="description" [(ngModel)]="product.description" required></textarea>
+        </mat-form-field>
+                <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Price</mat-label>
+            <input matInput type="number" name="price" [(ngModel)]="product.price" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Stock</mat-label>
+            <input matInput type="number" name="stock" [(ngModel)]="product.stock" required>
+        </mat-form-field>
+    </form>
+</div>
+
+<!--Mat dialog footer-->
+<div mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-button color="primary" (click)="onSubmit()" [disabled]="productForm.form.invalid">Save</button>
+</div>
+

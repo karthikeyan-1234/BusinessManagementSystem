@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CommonServices.Models;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,9 @@ namespace CommonServices.Events
 {
         // Fired when an order is created
     public record OrderCreatedEvent(Guid OrderId, decimal Price, Guid ProductId, float Quantity);
+
+    // Fired when an order is cancelled
+    public record OrderCancelledEvent(Order delOrder);
 
     // Request to reserve inventory
     public record ReserveInventoryRequest(Guid OrderId, Guid ProductId, float Quantity);

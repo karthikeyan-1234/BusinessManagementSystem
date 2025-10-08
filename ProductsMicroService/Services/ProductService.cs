@@ -33,8 +33,17 @@ namespace ProductsMicroService.Services
         }
 
         /// <summary>Creates a new product (same as Add, kept for clarity).</summary>
-        public async Task<Product> CreateProductAsync(Product product)
+        public async Task<Product> CreateProductAsync(CreateProduct newproduct)
         {
+            var product = new Product
+            {
+                ProductId = Guid.NewGuid(),
+                Name = newproduct.Name,
+                Description = newproduct.Description,
+                Price = newproduct.Price,
+                Stock = newproduct.Stock
+            };
+
             await _productRepository.AddAsync(product);
             await _productRepository.SaveAsync();
             return product;

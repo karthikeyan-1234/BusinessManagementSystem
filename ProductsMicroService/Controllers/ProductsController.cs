@@ -32,7 +32,7 @@ namespace ProductsMicroService.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] CommonServices.Models.Product product)
+        public async Task<IActionResult> CreateProduct([FromBody] CommonServices.Models.CreateProduct product)
         {
             if (product == null) return BadRequest();
             var created = await _productService.CreateProductAsync(product);
@@ -46,6 +46,14 @@ namespace ProductsMicroService.Controllers
             var updated = await _productService.UpdateProductAsync(id, product);
             if (updated == null) return NotFound();
             return Ok(updated);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(Guid id)
+        {
+            var deleted = await _productService.DeleteProductAsync(id);
+            if (!deleted) return NotFound();
+            return NoContent();
         }
     }
 }
