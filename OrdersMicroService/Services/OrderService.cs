@@ -43,7 +43,7 @@ namespace OrdersMicroService.Services
                 );
 
 
-                await _producer.ProduceAsync("order-created", new Message<string, string>
+                await _producer.ProduceAsync("order-created", new Message<string, string> //[$$$ 1] Order Created
                 {
                     Key = newOrder.OrderId.ToString(),
                     Value = JsonSerializer.Serialize(evt)
@@ -68,7 +68,7 @@ namespace OrdersMicroService.Services
                     IOrderRepository _orderRepository = scope.ServiceProvider.GetRequiredService<IOrderRepository>();
                     var delOrder = await _orderRepository.GetAsync(OrderId);
 
-                    // Publish "OrderCreated" event to Kafka
+                    // Publish "OrderDeleted" event to Kafka
                     var evt = new OrderCancelledEvent(delOrder);
 
                     await _producer.ProduceAsync("order-deleted", new Message<string, string>
@@ -79,6 +79,8 @@ namespace OrdersMicroService.Services
 
                     Console.WriteLine($"[OrderSaga] Published OrderDeleted for {delOrder.OrderId}");
 
+
+
                     return true;
                 }
                 catch (Exception ex)
@@ -87,6 +89,13 @@ namespace OrdersMicroService.Services
                     return false;
                 }
             }
+        }
+
+        public async Task<Order?> GetOrderByIdAsync(Guid id)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            IOrderRepository _orderRepository = scope.ServiceProvider.GetRequiredService<IOrderRepository>();
+            return await _orderRepository.GetAsync(id);
         }
 
         // This runs in a background worker service
@@ -114,17 +123,19 @@ namespace OrdersMicroService.Services
 
                 switch (cr.Topic)
                 {
-                    case "payment-processed":
+                     case "payment-processed":  //[$$$ 4] Payment Processed
                         await HandlePaymentProcessed(cr.Message.Value);
                         break;
-                    case "payment-failed":
-                        await HandlePaymentFailed(cr.Message.Value);
+
+                     case "inventory-reserved":
+                        await HandleInventoryReserved(cr.Message.Value);    //[$$$ 8] Inventory Reserved
                         break;
-                    case "inventory-reserved":
-                        await HandleInventoryReserved(cr.Message.Value);
+
+                    case "payment-failed":
+                        await HandlePaymentFailed(cr.Message.Value);  //[### 4] Payment Failed
                         break;
                     case "inventory-failed":
-                        await HandleInventoryFailed(cr.Message.Value);
+                        await HandleInventoryFailed(cr.Message.Value);   //[### 8] Inventory Failed
                         break;
                 }
             }
@@ -140,7 +151,7 @@ namespace OrdersMicroService.Services
             
 
             // Now request inventory reservation
-            await _producer.ProduceAsync("reserve-inventory", new Message<string, string>
+            await _producer.ProduceAsync("reserve-inventory", new Message<string, string>   //[$$$ 5] Reserve Inventory
             {
                 Key = order.OrderId.ToString(),
                 Value = JsonSerializer.Serialize(new ReserveInventory(order.OrderId,order.ProductId,evt.qty))

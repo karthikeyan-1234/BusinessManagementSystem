@@ -8,6 +8,8 @@ namespace CommonServices.Events
 {
     public record ReserveInventory(Guid OrderId, Guid ProductId, float qty);
 
+    public record ReleaseInventory(Guid OrderId, Guid ProductId, float qty);
+
     // Success
     public record InventoryReservedEvent(Guid OrderId,Guid ProductId);
 

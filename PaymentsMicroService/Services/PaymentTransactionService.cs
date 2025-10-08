@@ -54,7 +54,7 @@ namespace PaymentTransactionsMicroService.Services
                     switch (cr.Topic)
                     {
                         case "order-created":
-                            await HandleOrderCreated(cr.Message.Value, cancellationToken);
+                            await HandleOrderCreated(cr.Message.Value, cancellationToken);  //[$$$ 2] Order Created
                             break;
 
                         case "refund-payment":
@@ -91,7 +91,7 @@ namespace PaymentTransactionsMicroService.Services
                 await repo.SaveAsync(cancellationToken);
 
                 var processedEvent = new PaymentProcessedEvent(evt.OrderId, transaction.TransactionId, evt.Quantity);
-                await PublishEvent("payment-processed", evt.OrderId, processedEvent, cancellationToken);
+                await PublishEvent("payment-processed", evt.OrderId, processedEvent, cancellationToken);    //[$$$ 3] Payment Processed
 
                 Console.WriteLine($"[PaymentSaga] ✅ Payment succeeded for {evt.OrderId}");
             }

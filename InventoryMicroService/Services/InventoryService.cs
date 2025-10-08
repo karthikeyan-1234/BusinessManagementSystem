@@ -43,7 +43,7 @@ namespace InventoryMicroService.Services
         public async Task ListenForEvents(CancellationToken cancellationToken)
         {
             // Subscribe to the topic this service cares about
-            _consumer.Subscribe("reserve-inventory");
+            _consumer.Subscribe(new[] { "reserve-inventory", "release-inventory" });
 
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -54,7 +54,11 @@ namespace InventoryMicroService.Services
                     switch (cr.Topic)
                     {
                         case "reserve-inventory":
-                            await HandleReserveInventory(cr.Message.Value);
+                            await HandleReserveInventory(cr.Message.Value); //[$$$ 6] Reserve Inventory
+                            break;
+
+                        case "release-inventory":
+                            await HandleReleaseInventory(cr.Message.Value);
                             break;
                     }
                 }
@@ -88,7 +92,7 @@ namespace InventoryMicroService.Services
                     await inventoryRepository.UpdateAsync(item);
 
                     var reservedEvent = new InventoryReservedEvent(evt.OrderId, evt.ProductId);
-                    await _producer.ProduceAsync("inventory-reserved", new Message<string, string>
+                    await _producer.ProduceAsync("inventory-reserved", new Message<string, string> //[$$$ 7] Inventory Reserved
                     {
                         Key = evt.OrderId.ToString(),
                         Value = JsonSerializer.Serialize(reservedEvent)
@@ -106,6 +110,26 @@ namespace InventoryMicroService.Services
                         Value = JsonSerializer.Serialize(failedEvent)
                     });
                     Console.WriteLine($"[InventorySaga] Inventory reservation failed for order {evt.OrderId}. Reason: {reason}");
+                }
+            }
+        }
+
+        public async Task HandleReleaseInventory(string message)
+        {
+            var evt = JsonSerializer.Deserialize<OrderCancelledEvent>(message)!;
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var inventoryRepository = scope.ServiceProvider.GetRequiredService<IInventoryRepository>();
+                var item = await inventoryRepository.GetByProductIdAsync(evt.delOrder.ProductId);
+                if (item != null)
+                {
+                    item.AvailableQuantity += evt.delOrder.Quantity;
+                    await inventoryRepository.UpdateAsync(item);
+                    Console.WriteLine($"[InventorySaga] Inventory restored for product {evt.delOrder.ProductId} after order {evt.delOrder.OrderId} deletion.");
+                }
+                else
+                {
+                    Console.WriteLine($"[InventorySaga] Product {evt.delOrder.ProductId} not found while restoring inventory for order {evt.delOrder.OrderId} deletion.");
                 }
             }
         }

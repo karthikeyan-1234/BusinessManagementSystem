@@ -17,6 +17,26 @@ namespace OrdersMicroService.Controllers
             _orderService = orderService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllOrdersAsync()
+        {
+            // Logic to retrieve all orders
+            var orders = await _orderService.GetAllOrdersAsync();
+            return Ok(orders);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrderByIdAsync(Guid id)
+        {
+            // Logic to retrieve an order by ID
+            var order = await _orderService.GetOrderByIdAsync(id);
+            if (order == null)
+            {
+                return NotFound(new { Message = "Order not found" });
+            }
+            return Ok(order);
+        }
+
         [HttpPost("create")]
         public async Task<IActionResult> CreateOrder([FromBody] OrderRequest orderRequest)
         {
@@ -45,12 +65,6 @@ namespace OrdersMicroService.Controllers
             return NotFound(new { Message = "Order not found" });
         }
 
-        [HttpGet("GetAllOrders")]
-        public async Task<IActionResult> GetAllOrdersAsync()
-        {
-            // Logic to retrieve all orders
-            var orders = await _orderService.GetAllOrdersAsync();
-            return Ok(orders);
-        }
+        
     }
 }

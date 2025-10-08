@@ -8,5 +8,6 @@ namespace OrdersMicroService.Services
         public Task ListenForEvents(CancellationToken cancellationToken);
         public Task<IEnumerable<Order>> GetAllOrdersAsync();
         Task<bool> DeleteOrderAsync(Guid OrderId);
+        Task<Order?> GetOrderByIdAsync(Guid id);
     }
 }
