@@ -28,13 +28,23 @@ namespace OrdersMicroService.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Order?> GetAsync(Guid orderId)
+        public async Task<Order?> GetByIdAsync(Guid orderId)
         {
-            return await _dbContext.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+            return await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
         }
         public async Task<IEnumerable<Order>> GetAllAsync()
         {
             return await _dbContext.Orders.ToListAsync();
+        }
+
+        public IQueryable<Order> GetAll()
+        {
+            return _dbContext.Orders.AsQueryable();
+        }
+
+        public async Task<int> DeleteAsync(Guid orderId)
+        {
+            return await _dbContext.Orders.Where(o => o.Id == orderId).ExecuteDeleteAsync();
         }
     }
 }

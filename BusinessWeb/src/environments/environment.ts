@@ -3,7 +3,7 @@ export const environment = {
   production: false,
   stripePublishableKey: 'pk_test_51NNIIMSHXTQ38KZZ9xN8WOddbu2pYwPvqPUMe3PYTAMxv8wfhPUzk3kVsJQcwNiz7ezLz3SSIRWpZTEWDr297eRB00K3QGopZV', // Roll this key immediately!
   productsApiUrl: 'https://localhost:7030/api/products',
-  ordersApiUrl: 'https://localhost:7299/api/orders',
+  orderItemsApiUrl: 'https://localhost:7299/api/orderItems',
   appUrl: 'http://localhost:4200',
   rightSideDialogOptions: {
       width: '350px',

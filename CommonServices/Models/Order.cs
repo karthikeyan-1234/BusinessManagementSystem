@@ -6,24 +6,15 @@ using System.Threading.Tasks;
 
 namespace CommonServices.Models
 {
-    public enum OrderStatus
-    {
-        Pending,
-        Completed,
-        Failed
-    }
-
     public class Order
     {
-        public Guid OrderId { get; set; }
-        public Guid ProductId { get; set; }
-        public int Quantity { get; set; }
-        public decimal Price { get; set; }
+        public Guid Id { get; set; }
+        public string? customerName { get; set; }
+        public DateTime orderDate { get; set; }
+        public OrderStatus status { get; set; }
 
-        public OrderStatus Status { get; set; } = OrderStatus.Pending; // Pending, Completed, Failed
-        public Guid? PaymentTransactionId { get; set; }
+        public ICollection<OrderItem>? OrderItems { get; set; }
     }
 
-    public record OrderRequest(Guid ProductId, int Quantity, decimal Price);
-
+    public record OrderRequest(string? customerName, DateTime orderDate, OrderStatus status);
 }

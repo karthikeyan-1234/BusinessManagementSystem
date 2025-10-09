@@ -12,8 +12,8 @@ using OrdersMicroService.Contexts;
 namespace OrdersMicroService.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20251003063209_Orders migration")]
-    partial class Ordersmigration
+    [Migration("20251009095906_initial migration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,8 +27,28 @@ namespace OrdersMicroService.Migrations
 
             modelBuilder.Entity("CommonServices.Models.Order", b =>
                 {
-                    b.Property<Guid>("OrderId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("customerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("orderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("CommonServices.Models.OrderItem", b =>
+                {
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("PaymentTransactionId")
@@ -49,7 +69,23 @@ namespace OrdersMicroService.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("CommonServices.Models.OrderItem", b =>
+                {
+                    b.HasOne("CommonServices.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("CommonServices.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

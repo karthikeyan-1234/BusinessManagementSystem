@@ -12,7 +12,7 @@ namespace CommonServices.Events
     public record OrderCreatedEvent(Guid OrderId, decimal Price, Guid ProductId, float Quantity);
 
     // Fired when an order is cancelled
-    public record OrderCancelledEvent(Order delOrder);
+    public record OrderCancelledEvent(OrderItem delOrder);
 
     // Request to reserve inventory
     public record ReserveInventoryRequest(Guid OrderId, Guid ProductId, float Quantity);

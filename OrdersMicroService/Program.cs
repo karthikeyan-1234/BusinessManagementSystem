@@ -16,8 +16,8 @@ builder.Services.AddOpenApi();
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderItemService, OrderItemService>();
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
 
 // Kafka Producer
@@ -52,7 +52,7 @@ builder.Services.AddDbContext<OrderDbContext>(
 opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("OrdersDbConnection"))
 );
 
-builder.Services.AddHostedService<OrderService>();
+builder.Services.AddHostedService<OrderItemService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

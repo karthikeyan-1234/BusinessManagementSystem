@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Order } from '@stripe/stripe-js';
+import { OrderItem } from '../models/orderItem';
 
 
 @Injectable({
@@ -8,27 +10,27 @@ import { environment } from '../../environments/environment';
 })
 export class OrderService {
 
-  private apiUrl = `${environment.ordersApiUrl}`;
+  private apiUrl = `${environment.orderItemsApiUrl}`;
 
   constructor(private http: HttpClient) { }
 
-  getOrders() {
+  getOrderItems() {
     return this.http.get(this.apiUrl);
   }
 
-  getOrderById(id: string) {
+  getOrderItemById(id: string) {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
 
-  createOrder(order: any) {
-    return this.http.post(this.apiUrl, order);
+  createOrderItem(orderItem: OrderItem) {
+    return this.http.post(this.apiUrl, orderItem);
   }
 
-  updateOrder(id: string, order: any) {
-    return this.http.put(`${this.apiUrl}/${id}`, order);
+  updateOrderItem(id: string, orderItem: OrderItem) {
+    return this.http.put(`${this.apiUrl}/${id}`, orderItem);
   }
 
-  deleteOrder(id: string) {
+  deleteOrderItem(id: string) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

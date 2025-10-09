@@ -5,9 +5,9 @@ namespace OrdersMicroService.Services
     public interface IOrderService
     {
         Task<string> CreateOrderAsync(Order newOrder);
-        public Task ListenForEvents(CancellationToken cancellationToken);
-        public Task<IEnumerable<Order>> GetAllOrdersAsync();
         Task<bool> DeleteOrderAsync(Guid OrderId);
-        Task<Order?> GetOrderByIdAsync(Guid id);
+        Task<IEnumerable<Order>> GetAllOrdersAsync();
+        Task<Order?> GetOrderByIdAsync(Guid OrderId);
+        Task UpdateOrderAsync(Order order);
     }
 }

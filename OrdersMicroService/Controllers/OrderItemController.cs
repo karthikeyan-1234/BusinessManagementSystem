@@ -9,27 +9,27 @@ namespace OrdersMicroService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderItemController : ControllerBase
     {
-        IOrderService _orderService;
-        public OrderController(IOrderService orderService)
+        IOrderItemService _orderService;
+        public OrderItemController(IOrderItemService orderService)
         {
             _orderService = orderService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllOrderssAsync()
+        public async Task<IActionResult> GetAllOrderItemssAsync()
         {
             // Logic to retrieve all orders
-            var orders = await _orderService.GetAllOrdersAsync();
+            var orders = await _orderService.GetAllOrderItemsAsync();
             return Ok(orders);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderByIdAsync(Guid id)
+        public async Task<IActionResult> GetOrderItemByIdAsync(Guid id)
         {
             // Logic to retrieve an order by ID
-            var order = await _orderService.GetOrderByIdAsync(id);
+            var order = await _orderService.GetOrderItemByIdAsync(id);
             if (order == null)
             {
                 return NotFound(new { Message = "Order not found" });
@@ -38,24 +38,26 @@ namespace OrdersMicroService.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateOrder([FromBody] OrderRequest OrderRequest)
+        public async Task<IActionResult> CreateOrderItem([FromBody] OrderItemRequest orderItemRequest)
         {
             // Logic to create an order
-            await _orderService.CreateOrderAsync(new Order
+            await _orderService.CreateOrderItemAsync(new OrderItem
             {
-                customerName = OrderRequest.customerName,
-                orderDate = OrderRequest.orderDate,
-                status = OrderRequest.status
+                OrderId = orderItemRequest.OrderId,
+                ProductId = orderItemRequest.ProductId,
+                Quantity = orderItemRequest.Quantity,
+                Price = orderItemRequest.Price,
+                Status = OrderStatus.Pending
             });
 
             return Ok(new { Message = "Order created successfully", OrderId = 123 });
         }
 
         [HttpPost("delete")]
-        public async Task<IActionResult> DeleteOrderAsync([FromBody] Guid orderId)
+        public async Task<IActionResult> DeleteOrderItemAsync([FromBody] Guid orderId)
         {
             // Logic to delete an order
-            var result = await _orderService.DeleteOrderAsync(orderId);
+            var result = await _orderService.DeleteOrderItemAsync(orderId);
             if (result)
             {
                 return Ok(new { Message = "Order deleted successfully" });
