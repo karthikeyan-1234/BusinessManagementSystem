@@ -63,6 +63,19 @@ namespace OrdersMicroService.Controllers
             return NotFound(new { Message = "Order not found" });
         }
 
-        
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateOrderAsync([FromBody] Order order)
+        {
+            // Logic to update an order
+            var existingOrder = await _orderService.GetOrderByIdAsync(order.Id);
+            if (existingOrder == null)
+            {
+                return NotFound(new { Message = "Order not found" });
+            }
+            await _orderService.UpdateOrderAsync(order);
+            return Ok(new { Message = "Order updated successfully" });
+        }
+
     }
 }
