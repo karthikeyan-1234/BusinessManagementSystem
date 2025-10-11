@@ -53,6 +53,24 @@ namespace OrdersMicroService.Controllers
             return Ok(new { Message = "Order created successfully", OrderId = 123 });
         }
 
+        [HttpPost("createMultiple")]
+        public async Task<IActionResult> CreateMultipleOrderItems([FromBody] List<OrderItemRequest> orderItemRequests)
+        {
+            // Logic create and add multiple order items to order
+            var orderItems = orderItemRequests.Select(o => new OrderItem
+            {
+                OrderId = o.OrderId,
+                ProductId = o.ProductId,
+                Quantity = o.Quantity,
+                Price = o.Price,
+                Status = OrderStatus.Pending
+            });
+
+            var createdItems = await _orderService.CreateMultipleOrderItemsAsync(orderItems);
+            return Ok(new { Message = "Order items created successfully", CreatedItems = createdItems });
+        }
+
+
         [HttpPost("delete")]
         public async Task<IActionResult> DeleteOrderItemAsync([FromBody] Guid orderId)
         {

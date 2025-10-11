@@ -5,6 +5,7 @@ using Confluent.Kafka;
 
 using OrdersMicroService.Repositories;
 
+using System.Collections.Immutable;
 using System.Text.Json;
 
 namespace OrdersMicroService.Services
@@ -212,6 +213,16 @@ namespace OrdersMicroService.Services
             using var scope = _serviceScopeFactory.CreateScope();
             IOrderItemRepository _orderRepository = scope.ServiceProvider.GetRequiredService<IOrderItemRepository>();
             return await _orderRepository.GetAllAsync();
-        }   
+        }
+
+        public async Task<IEnumerable<OrderItem>> CreateMultipleOrderItemsAsync(IEnumerable<OrderItem> newOrders)
+        {
+            //add multiple order items to an order
+            var scope = _serviceScopeFactory.CreateScope();
+            IOrderItemRepository _orderRepository = scope.ServiceProvider.GetRequiredService<IOrderItemRepository>();
+            await _orderRepository.SaveAsync(newOrders);
+            return newOrders;
+
+        }
     }
 }

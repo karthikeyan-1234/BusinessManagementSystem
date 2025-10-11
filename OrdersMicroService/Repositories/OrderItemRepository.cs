@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 using OrdersMicroService.Contexts;
 
-
 namespace OrdersMicroService.Repositories
 {
     public class OrderItemRepository : IOrderItemRepository
@@ -28,6 +27,12 @@ namespace OrdersMicroService.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task UpdateAsync(IEnumerable<OrderItem> order)
+        {
+            _dbContext.OrderItems.UpdateRange(order);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<OrderItem?> GetByIdAsync(Guid orderId)
         {
             return await _dbContext.OrderItems.FirstOrDefaultAsync(o => o.OrderId == orderId);
@@ -46,6 +51,18 @@ namespace OrdersMicroService.Repositories
         {
             _dbContext.OrderItems.Remove(order);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<OrderItem>> GetByOrderIdAsync(Guid orderId)
+        {
+            return await _dbContext.OrderItems.Where(oi => oi.OrderId == orderId).ToListAsync();
+        }
+
+        public async Task<bool> SaveAsync(IEnumerable<OrderItem> order)
+        {
+            await _dbContext.OrderItems.AddRangeAsync(order);
+            var result = await _dbContext.SaveChangesAsync();
+            return result > 0;
         }
     }
 }

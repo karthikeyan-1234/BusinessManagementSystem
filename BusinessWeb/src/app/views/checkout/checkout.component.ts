@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { loadStripe, Stripe, StripeElements } from '@stripe/stripe-js';
 import { environment } from '../../../environments/environment';
 import { CheckoutService } from '../../services/checkout.service';
-import { PaymentIntentCreateRequest } from '../../models/paymentIntentCreateRequest';
+import { PaymentIntentCreateRequest } from '../../models/requests/paymentIntentCreateRequest';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 

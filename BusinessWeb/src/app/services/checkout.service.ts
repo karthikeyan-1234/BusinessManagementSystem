@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PaymentIntentCreateRequest } from '../models/paymentIntentCreateRequest';
+import { PaymentIntentCreateRequest } from '../models/requests/paymentIntentCreateRequest';
 
 @Injectable({
   providedIn: 'root'
