@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35818.85
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11111.16 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersMicroService", "OrdersMicroService\OrdersMicroService.csproj", "{304832AF-614D-410D-ACCB-3430B7111D43}"
 EndProject
@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductsMicroService", "Pro
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "BusinessWeb", "BusinessWeb\", "{A5D9B78A-25B3-09B5-08B7-E4C8321C5D9B}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_56733"
 		Debug.AspNetCompiler.PhysicalPath = "BusinessWeb\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_56733\"

@@ -1,8 +1,13 @@
+﻿using CommonServices.Auth;
 using CommonServices.Models;
 using CommonServices.Repositories;
 
 using Confluent.Kafka;
 
+using Keycloak.AuthServices.Authentication;
+using Keycloak.AuthServices.Authorization;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 using PaymentsMicroService.Contexts;
@@ -10,7 +15,67 @@ using PaymentsMicroService.Services;
 
 using PaymentTransactionsMicroService.Services;
 
+using System.Security.Claims;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<KeycloakAuthorizationFilter>();
+
+
+// Add services to the container.
+builder.Services.AddControllers(options =>
+{
+    options.Filters.AddService<KeycloakAuthorizationFilter>();
+});
+
+builder.Services.AddHttpClient();
+
+
+// 🔑 Configure Keycloak Authentication (uses appsettings.json)
+builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration);
+// 🛡️ Configure Keycloak Authorization Services
+builder.Services.AddKeycloakAuthorization(builder.Configuration);
+
+// ⚠️ NECESSARY CUSTOM LOGIC: Fix HTTPS requirement and add custom token validation
+builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    // CRITICAL: Disable HTTPS requirement for development
+    options.RequireHttpsMetadata = false;
+
+    // Required for multiple audience support
+    options.TokenValidationParameters.ValidAudiences = new[] { "api-app", "angular-app", "master-realm", "account" };
+    options.TokenValidationParameters.RoleClaimType = ClaimTypes.Role;
+
+    // Required for custom azp validation and role extraction
+    options.Events = new JwtBearerEvents
+    {
+
+        OnTokenValidated = ctx =>
+        {
+            // Reject if token doesn't contain UMA "authorization.permissions"
+            var hasRpt = ctx.Principal?.Claims.Any(c => c.Type == "authorization") ?? false;
+            if (!hasRpt)
+            {
+                ctx.Fail("RPT (UMA token) required.");
+            }
+            return Task.CompletedTask;
+        },
+
+        OnAuthenticationFailed = context =>
+        {
+            Console.WriteLine("Authentication failed: " + context.Exception.Message);
+            return Task.CompletedTask;
+        },
+
+        OnChallenge = context =>
+        {
+            Console.WriteLine("OnChallenge: " + context.Error + " - " + context.ErrorDescription);
+            return Task.CompletedTask;
+        }
+    };
+});
+
+
 
 // Add services to the container.
 

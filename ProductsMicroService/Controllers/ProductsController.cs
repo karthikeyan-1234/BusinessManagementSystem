@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CommonServices.Auth;
+
+using Keycloak.AuthServices.Authorization;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using ProductsMicroService.Services;
@@ -7,6 +12,8 @@ namespace ProductsMicroService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
+    [Resource("Products")]
     public class ProductsController : ControllerBase
     {
         IProductService _productService;
@@ -17,6 +24,7 @@ namespace ProductsMicroService.Controllers
 
         //all basic crud operations
         [HttpGet]
+        [Permission("read")]
         public async Task<IActionResult> GetAllProducts()
         {
             var products = await _productService.GetAllProductsAsync();
@@ -24,6 +32,7 @@ namespace ProductsMicroService.Controllers
         }
 
         [HttpGet("{id}")]
+        [Permission("read")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
             var product = await _productService.GetProductByIdAsync(id);
@@ -32,6 +41,7 @@ namespace ProductsMicroService.Controllers
         }
 
         [HttpPost]
+        [Permission("create")]
         public async Task<IActionResult> CreateProduct([FromBody] CommonServices.Models.CreateProduct product)
         {
             if (product == null) return BadRequest();
@@ -40,6 +50,7 @@ namespace ProductsMicroService.Controllers
         }
 
         [HttpPut("{id}")]
+        [Permission("update")]
         public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] CommonServices.Models.Product product)
         {
             if (product == null || id != product.ProductId) return BadRequest();
@@ -49,6 +60,7 @@ namespace ProductsMicroService.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Permission("delete")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
             var deleted = await _productService.DeleteProductAsync(id);

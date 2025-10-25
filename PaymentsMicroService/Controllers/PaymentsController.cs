@@ -1,4 +1,5 @@
-﻿using CommonServices.Models;
+﻿using CommonServices.Auth;
+using CommonServices.Models;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ namespace PaymentsMicroService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Resource("Payments")]
     public class PaymentsController : ControllerBase
     {
         private readonly StripeOptions _stripeOptions;
@@ -23,6 +25,7 @@ namespace PaymentsMicroService.Controllers
 
         //Create Payment Intent
         [HttpPost("create-payment-intent")]
+        [Permission("make-payment")]
         public async Task<IActionResult> CreatePaymentIntent([FromBody] PaymentIntentCreateRequest request)
         {
             if (request == null)
