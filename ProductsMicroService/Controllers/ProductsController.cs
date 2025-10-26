@@ -25,6 +25,7 @@ namespace ProductsMicroService.Controllers
         //all basic crud operations
         [HttpGet]
         [Permission("read")]
+        //[AllowAnonymous]
         public async Task<IActionResult> GetAllProducts()
         {
             var products = await _productService.GetAllProductsAsync();

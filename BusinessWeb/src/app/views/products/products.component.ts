@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { AddProductComponent } from './add-product/add-product.component';
 import { environment } from '../../../environments/environment';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-products',
@@ -26,9 +27,14 @@ export class ProductsComponent {
   dataSource: MatTableDataSource<Product> = new MatTableDataSource(this.products);
   editedProduct: Product | null = null;
 
-  constructor(private productsService: ProductsService, private dialog: MatDialog) {
+  constructor(private productsService: ProductsService, private dialog: MatDialog, private keycloak: KeycloakService) {
     this.updateProductList();
   }
+
+  async ngOnInit() {
+  const token = await this.keycloak.getToken();
+  console.log('Access Token:', token);
+}
 
   updateProductList() {
     this.productsService.getProducts().subscribe((data: any) => {

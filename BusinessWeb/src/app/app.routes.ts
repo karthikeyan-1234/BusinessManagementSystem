@@ -9,7 +9,7 @@ import { OrderComponent } from './views/order/order.component';
 import { KeycloakGuard } from './auth/keycloak.guard';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/products', pathMatch: 'full', canActivate: [KeycloakGuard] },
+    { path: '', redirectTo: '/products', pathMatch: 'full' },
     { path: 'products', component: ProductsComponent, canActivate: [KeycloakGuard] },
     { path: 'inventory', component: InventoryComponent, canActivate: [KeycloakGuard] },
     { path: 'orders', component: OrderComponent, canActivate: [KeycloakGuard] },

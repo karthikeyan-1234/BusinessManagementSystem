@@ -2,11 +2,13 @@ import { APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection } from '
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './services/keycloak-init';
+import { AuthInterceptor } from './auth/auth.interceptor';
+import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +21,19 @@ export const appConfig: ApplicationConfig = {
       deps: [KeycloakService],
       multi: true
     },
-    provideHttpClient(),
-    provideNativeDateAdapter()
+    provideHttpClient(withInterceptorsFromDi()),
+    provideNativeDateAdapter(),
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
+      multi: true
+    }
   ]
 };
