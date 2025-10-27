@@ -8,13 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { LoaderComponent } from '../loader/loader.component';
 
 
 @Component({
   selector: 'app-menu',
   standalone: true,
   imports: [RouterOutlet, CommonModule, MatSidenavModule, MatListModule, MatToolbarModule, 
-    MatIconModule, MatButtonModule, RouterLinkActive, RouterModule],
+    MatIconModule, MatButtonModule, RouterLinkActive, RouterModule, LoaderComponent],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })

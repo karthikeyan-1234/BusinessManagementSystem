@@ -3,10 +3,11 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/c
 import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { KeycloakService } from 'keycloak-angular';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private keycloakService: KeycloakService) {}
+  constructor(private keycloakService: KeycloakService,private authService: AuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return from(
@@ -28,6 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
           return next.handle(authReq);
         }
         console.warn('No token available');
+        this.authService.logout();
         return next.handle(req);
       })
     );

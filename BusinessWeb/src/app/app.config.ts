@@ -9,6 +9,7 @@ import { KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './services/keycloak-init';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
+import { LoaderInterceptor } from './auth/loader.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +24,12 @@ export const appConfig: ApplicationConfig = {
     },
     provideHttpClient(withInterceptorsFromDi()),
     provideNativeDateAdapter(),
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true
+    },
 
     {
       provide: HTTP_INTERCEPTORS,
