@@ -1,0 +1,34 @@
+<div mat-dialog-header>
+    <div class="close-button">
+        <button mat-icon-button (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <h2 mat-dialog-title>Add new purchase</h2>
+</div>
+
+<div mat-dialog-content>
+    <form (ngSubmit)="onSubmit()" #purchaseForm="ngForm">
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Purchase Date</mat-label>
+            <input matInput name="purchaseDate" [(ngModel)]="newPurchase.purchaseDate" type="date" required/>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Payment Transaction ID</mat-label>
+            <input matInput name="paymentTransactionId" [(ngModel)]="newPurchase.paymentTransactionId" type="text" required/>
+        </mat-form-field>
+
+         <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Order Status</mat-label>
+            <mat-select name="state" [(ngModel)]="newPurchase.state" required>
+                <mat-option *ngFor="let optn of purchaseStatuses" [value]="optn.id">{{optn.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>       
+    </form>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-button (click)="onSubmit()" [disabled]="purchaseForm.form.invalid">Save</button>
+</div>

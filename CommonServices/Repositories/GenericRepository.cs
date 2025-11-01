@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CommonServices.Models;
+
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace CommonServices.Repositories

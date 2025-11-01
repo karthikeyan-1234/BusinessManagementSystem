@@ -1,0 +1,73 @@
+<div class = "app-table">
+
+    <div class ="add-section">
+        <mat-icon (click)="openAddDialog()">add_circle</mat-icon>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" class="full-width-table">
+
+        <!-- Purchase Date Column -->
+        <ng-container matColumnDef="purchaseDate">
+            <th mat-header-cell *matHeaderCellDef> Purchase Date </th>
+            <td mat-cell *matCellDef="let purchase">
+                <ng-container *ngIf="editedPurchase && editedPurchase?.id === purchase.id;else displayId">
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="editedPurchase.purchaseDate" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </ng-container>
+                <ng-template #displayId>
+                    {{purchase.purchaseDate | date}}
+                </ng-template>
+            </td>
+        </ng-container>
+
+        <!-- State Column -->
+        <ng-container matColumnDef="state">
+            <th mat-header-cell *matHeaderCellDef> State </th>
+            <td mat-cell *matCellDef="let purchase"> 
+                <ng-container *ngIf="editedPurchase && editedPurchase?.id === purchase.id;else displayState">
+                    <mat-select  [(ngModel)]="editedPurchase.state">
+                        <mat-option *ngFor="let status of purchaseStatuses" [value]="status.id">{{status.name}}</mat-option>
+                    </mat-select>
+                </ng-container>
+                <ng-template #displayState>
+                    {{purchase.state | LookUpIdIn: purchaseStatuses}}
+                </ng-template>
+            </td>
+        </ng-container>
+
+        <!-- Payment Transaction ID Column -->
+        <ng-container matColumnDef="paymentTransactionId">
+            <th mat-header-cell *matHeaderCellDef> Payment Transaction ID </th>
+            <td mat-cell *matCellDef="let purchase"> {{purchase.paymentTransactionId}} </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+                <ng-container *ngIf="!editedPurchase || editedPurchase.id !== element.id">
+                    <button mat-icon-button color="primary" (click)="setEditingPurchase(editedPurchase ? null : element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deletePurchase(element.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </ng-container>
+                <ng-container *ngIf="editedPurchase && editedPurchase.id === element.id">
+                    <button mat-icon-button color="primary" (click)="saveEdit(editedPurchase)">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="cancelEdit()">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </ng-container>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+</div>

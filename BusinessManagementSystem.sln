@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11111.16 d18.0
+VisualStudioVersion = 18.0.11111.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersMicroService", "OrdersMicroService\OrdersMicroService.csproj", "{304832AF-614D-410D-ACCB-3430B7111D43}"
 EndProject
@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\..\..\Downloads\Architecture.png = ..\..\..\Downloads\Architecture.png
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseMicroService", "PurchaseMicroService\PurchaseMicroService.csproj", "{05FB0F50-F960-4AD7-A565-3AB90955763C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{A5D9B78A-25B3-09B5-08B7-E4C8321C5D9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A5D9B78A-25B3-09B5-08B7-E4C8321C5D9B}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{A5D9B78A-25B3-09B5-08B7-E4C8321C5D9B}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{05FB0F50-F960-4AD7-A565-3AB90955763C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05FB0F50-F960-4AD7-A565-3AB90955763C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05FB0F50-F960-4AD7-A565-3AB90955763C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05FB0F50-F960-4AD7-A565-3AB90955763C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

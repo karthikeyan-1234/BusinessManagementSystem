@@ -7,6 +7,7 @@ import { CheckoutComponent } from './views/checkout/checkout.component';
 import { PaymentSuccessComponent } from './views/payment-success/payment-success.component';
 import { OrderComponent } from './views/order/order.component';
 import { KeycloakGuard } from './auth/keycloak.guard';
+import { PurchaseComponent } from './views/purchase/purchase.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/products', pathMatch: 'full' },
@@ -16,4 +17,5 @@ export const routes: Routes = [
     { path: 'payments', component: PaymentsComponent, canActivate: [KeycloakGuard] },
     { path: 'checkout', component: CheckoutComponent, canActivate: [KeycloakGuard] },
     { path: 'payment-success', component: PaymentSuccessComponent, canActivate: [KeycloakGuard] },
+    { path: 'purchases', component: PurchaseComponent, canActivate: [KeycloakGuard] }
 ];

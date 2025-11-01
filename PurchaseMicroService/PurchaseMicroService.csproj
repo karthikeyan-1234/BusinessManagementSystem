@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>f96008d2-e8a8-44b2-a19c-0d815325d839</UserSecretsId>
+    <UserSecretsId>44f16226-3b1c-41df-995b-7ea10786212a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,10 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommonServices\CommonServices.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
