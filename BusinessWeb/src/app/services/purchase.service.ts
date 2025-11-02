@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { CreatePurchase } from '../models/requests/createPurchase';
 import { Purchase } from '../models/requests/purchase';
 import { Observable, of } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class PurchaseService {
   }
 
   createPurchase(purchase:CreatePurchase){
+    purchase.paymentTransactionId = uuidv4();
     return this.http.post<Purchase>(environment.purchaseApiUrl, purchase);
   }
 
@@ -26,6 +28,7 @@ export class PurchaseService {
   }
 
   updatePurchase(id: string, purchase: Purchase) {
+    console.log('Updating purchase with ID:', id, 'Data:', purchase);
     return this.http.put<Purchase>(`${environment.purchaseApiUrl}/${id}`, purchase);
   }
 

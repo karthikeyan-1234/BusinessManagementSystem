@@ -21,7 +21,8 @@ namespace PurchaseMicroService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllOrderssAsync()
         {
-            return Ok(await purchaseService.GetAllPurchasesAsync());
+            var purchases = await purchaseService.GetAllPurchasesAsync();
+            return Ok(purchases);
         }
 
         [HttpGet("{id}")]
@@ -35,14 +36,14 @@ namespace PurchaseMicroService.Controllers
             return NotFound();
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> CreateOrderasync(CreatePurchase newPurchase)
         {
             var purchase = await purchaseService.CreatePurchaseAsync(newPurchase);
             return Ok(purchase);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(Guid id)
         {
             var result = await purchaseService.DeletePurchaseAsync(id);
@@ -53,10 +54,10 @@ namespace PurchaseMicroService.Controllers
             return BadRequest();
         }
 
-        [HttpPut("update")]
-        public async Task<IActionResult> UpdateAsync(Purchase existingPurchase)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(Guid id,[FromBody] Purchase existingPurchase)
         {
-            var purchase = await purchaseService.GetPurchaseByIdAsync(existingPurchase.id);
+            var purchase = await purchaseService.GetPurchaseByIdAsync(id);
 
             if (purchase != null)
             {

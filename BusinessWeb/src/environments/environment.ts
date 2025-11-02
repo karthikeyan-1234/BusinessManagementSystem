@@ -6,6 +6,7 @@ export const environment = {
   orderItemsApiUrl: 'https://localhost:7299/api/orderItems',
   ordersApiUrl: 'https://localhost:7299/api/order',
   purchaseApiUrl: 'https://localhost:7275/api/purchase',
+  notificationUrl: '',
   appUrl: 'http://localhost:4200',
   rightSideDialogOptions: {
       width: '350px',

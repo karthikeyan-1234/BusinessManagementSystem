@@ -5,6 +5,18 @@
     </button>
     <span>My App</span>
     <div class="example-spacer"></div>
+
+
+        <!-- Notification Bell Icon with Badge -->
+    <button mat-icon-button 
+            [matBadge]="notify.notificationCount()" 
+            [matBadgeHidden]="notify.notificationCount() === 0"
+            matBadgeColor="accent"
+            class="notification-button" 
+            (click)="openNotifications()">
+        <mat-icon>notifications</mat-icon>
+    </button>
+
     <!--Log Out button-->
     <button class="username-container" (click)="logOut()">
       <span class="username-text">{{ username }}</span>

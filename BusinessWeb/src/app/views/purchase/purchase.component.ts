@@ -70,7 +70,7 @@ export class PurchaseComponent {
   }
   saveEdit(purchase: Purchase) {
     if (this.editedPurchase) {
-      this.purchaseService.updatePurchase(this.editedPurchase.id, purchase).subscribe({
+      this.purchaseService.updatePurchase(this.editedPurchase.id, this.editedPurchase).subscribe({
         next: () => {
           this.loadPurchases();
           this.editedPurchase = null;
